@@ -43,12 +43,12 @@
         <article class="blog-post">
           <h3 class="about-heading">Recent Articles</h3>
           <br>
-          {% for post in all_posts[:3] %}
+          {% for post in all_posts %}
             <div class="card mb-3 card-body" style="border-radius: 1rem;">
               <div class="media">
                 <img class='align-self-start mr-3 rounded-3' src="{{post.img_url}}" alt="Generic placeholder image">
                   <div class="post-preview">
-                    <a href="{{ url_for('show_post', post_id=post.id) }}">
+                    <a href="{{ url_for('show_purpose_post', purpose_post_id=post.id) }}">
                       <h2 class="about-title post-title">
                         {{post.title}}
                       </h2>
@@ -71,12 +71,13 @@
           <h2 class="mt-5 about-heading">Best Fiction Stories ever written!</h2>
           <br>
 
-          {% for post in all_posts[5:8] %}
+
+          {% for post in all_posts %}
             <div class="card mb-3 card-body" style="border-radius: 1rem;">
               <div class="media">
                 <img class='align-self-start mr-3 rounded-3' src="{{post.img_url}}" alt="Generic placeholder image">
                   <div class="post-preview">
-                    <a href="{{ url_for('show_post', post_id=post.id) }}">
+                    <a href="{{ url_for('show_purpose_post', purpose_post_id=post.id) }}">
                       <h2 class="about-title post-title">
                         {{post.title}}
                       </h2>
@@ -135,7 +136,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="{{url_for('newsletters')}}" class="nav-link link-dark">
+                    <a href="{{url_for('newsletter')}}" class="nav-link link-dark">
                       <i class="fas fa-newspaper fa-fw me-3"></i>
                       Newsletters
                     </a>
