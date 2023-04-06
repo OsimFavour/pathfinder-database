@@ -1,7 +1,7 @@
 from io import BytesIO
 from flask import render_template, redirect, url_for, flash, abort, request, send_file
 from blog import app, db, login_manager
-from blog.forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, SearchForm
+from blog.forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, SearchForm, RequestResetForm, ResetPasswordForm
 from blog.models import User, PurposePost, RelationshipPost, Fiction, Newsletter, Upload, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -544,4 +544,12 @@ def delete_newsletter(newsletter_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for('home'))
+
+
+@app.route("/reset-password", methods=["GET", "POST"])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+    form = RequestResetForm()
+    return render_template("reset-request.html", title="Reset Password", form=form)
 
