@@ -26,12 +26,12 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Sign Up")
 
     def validate_username(self, name):
-        user = User.query.filter_by(name=name.data)
+        user = User.query.filter_by(name=name.data).first()
         if user:
             raise ValidationError("That username is taken. Please choose a different one.")
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data)
+        user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError("That email is taken. Please choose a different one.")
 
@@ -46,3 +46,19 @@ class LoginForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment = CKEditorField("Comments", validators=[DataRequired()], render_kw={"style": "font-weight: bold;"})
     submit = SubmitField("Submit Comment")
+    
+    
+class RequestResetForm(FlaskForm):
+    email = StringField("Email address", validators=[DataRequired(), Email()])
+    submit = SubmitField("Request Password Reset")
+    
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError("There is no account with that email, you must register first.")
+
+
+class ResetPasswordForm(FlaskForm): 
+    password = PasswordField("Password", validators=[DataRequired()])
+    confirm_password = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password")])
+    submit = SubmitField("Reset Password")
