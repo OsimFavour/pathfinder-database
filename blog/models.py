@@ -1,9 +1,14 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from blog import db, app
+# from itsdangerous import URLSafeTimedSerializer as Serializer
+from blog import db, app, login_manager
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id)) 
 
 class User(UserMixin, db.Model):
     __tablename__ = "users"
@@ -27,7 +32,7 @@ class User(UserMixin, db.Model):
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config["SECRET_KEY"], expires_sec)
-        return s.dumps({"usser_id": self.id}).decode("utf-8")
+        return s.dumps({"user_id": self.id}).decode("utf-8")
     
     
     @staticmethod
@@ -100,7 +105,6 @@ class Fiction(db.Model):
 
     def __repr__(self):
         return f"Post('{self.author}', '{self.title}', '{self.date}')"
-
 
      
 class Newsletter(db.Model):
