@@ -1,9 +1,10 @@
-from flask import render_template, request, url_for, flash, redirect, abort, Blueprint
+from flask import render_template, url_for, flash, redirect, abort, Blueprint
 from flask_login import current_user, login_required
 from blog import db, admin_only
 from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Comment
 from blog.posts.forms import CreatePostForm, CommentForm
 from bs4 import BeautifulSoup
+
 
 posts = Blueprint("posts", __name__)
 
@@ -18,7 +19,7 @@ def show_purpose_post(purpose_post_id):
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.", "info")
-            return redirect(url_for("login"))
+            return redirect(url_for("users.login"))
         new_comment = Comment(
             text=form.comment.data,
             comment_author=current_user,
@@ -37,7 +38,7 @@ def show_relationship_post(relationship_post_id):
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.", "info")
-            return redirect(url_for("login"))
+            return redirect(url_for("users.login"))
         new_comment = Comment(
             text=form.comment.data,
             comment_author=current_user,
@@ -56,7 +57,7 @@ def show_fiction_post(fiction_post_id):
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.", "info")
-            return redirect(url_for("login"))
+            return redirect(url_for("users.login"))
         new_comment = Comment(
             text=form.comment.data,
             comment_author=current_user,
@@ -75,7 +76,7 @@ def show_newsletter(newsletter_id):
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.", "info")
-            return redirect(url_for("login"))
+            return redirect(url_for("users.login"))
         new_comment = Comment(
             text=form.comment.data,
             comment_author=current_user,
@@ -103,7 +104,7 @@ def add_for_purpose():
         )
         db.session.add(new_post)
         db.session.commit()
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
     return render_template("make-post.html", title="Post-Purpose", form=form, current_user=current_user, add_for_purpose=True)
 
 
@@ -122,7 +123,7 @@ def add_for_relationship():
         )
         db.session.add(new_post)
         db.session.commit()
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
     return render_template("make-post.html", title="Post-Relationship", form=form, current_user=current_user, add_for_relationship=True)
 
 
@@ -141,7 +142,7 @@ def add_for_fiction():
         )
         db.session.add(new_post)
         db.session.commit()
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
     return render_template("make-post.html", title="Post-Fiction", form=form, current_user=current_user, add_for_fiction=True)
 
 
@@ -160,7 +161,7 @@ def add_for_newsletter():
         )
         db.session.add(new_post)
         db.session.commit()
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
     return render_template("make-post.html", title="Post-Newsletters", form=form, current_user=current_user, add_for_newsletter=True)
 
 
@@ -185,7 +186,7 @@ def edit_purpose_post(purpose_post_id):
         post.img_url = edit_form.img_url.data
         post.body = soup.text
         db.session.commit()
-        return redirect(url_for("show_purpose_post", purpose_post_id=post.id))
+        return redirect(url_for("posts.show_purpose_post", purpose_post_id=post.id))
 
     return render_template("make-post.html", form=edit_form, current_user=current_user, edit_for_purpose=True)
 
@@ -208,7 +209,7 @@ def edit_relationship_post(relationship_post_id):
         post.img_url = edit_form.img_url.data
         post.body = soup.text
         db.session.commit()
-        return redirect(url_for("show_relationship_post", relationship_post_id=post.id))
+        return redirect(url_for("posts.show_relationship_post", relationship_post_id=post.id))
 
     return render_template("make-post.html", form=edit_form, current_user=current_user, edit_for_relationship=True)
 
@@ -231,7 +232,7 @@ def edit_fiction_post(fiction_post_id):
         post.img_url = edit_form.img_url.data
         post.body = soup.text
         db.session.commit()
-        return redirect(url_for("show_fiction_post", fiction_post_id=post.id))
+        return redirect(url_for("posts.show_fiction_post", fiction_post_id=post.id))
 
     return render_template("make-post.html", form=edit_form, current_user=current_user, edit_for_fiction=True)
 
@@ -254,7 +255,7 @@ def edit_newsletter(newsletter_id):
         post.img_url = edit_form.img_url.data
         post.body = soup.text
         db.session.commit()
-        return redirect(url_for("show_newsletter", newsletter_id=post.id))
+        return redirect(url_for("posts.show_newsletter", newsletter_id=post.id))
 
     return render_template("make-post.html", form=edit_form, current_user=current_user, edit_for_newsletter=True)
 
@@ -268,7 +269,7 @@ def delete_purpose_post(purpose_post_id):
     post_to_delete = PurposePost.query.get(purpose_post_id)
     db.session.delete(post_to_delete)
     db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('main.home'))
 
 
 @posts.route("/delete-relationship-post/<int:relationship_post_id>", methods=["POST"])
@@ -277,7 +278,7 @@ def delete_relationship_post(relationship_post_id):
     post_to_delete = RelationshipPost.query.get(relationship_post_id)
     db.session.delete(post_to_delete)
     db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('main.home'))
 
 
 @posts.route("/delete-fiction-post/<int:fiction_post_id>", methods=["POST"])
@@ -286,7 +287,7 @@ def delete_fiction_post(fiction_post_id):
     post_to_delete = Fiction.query.get(fiction_post_id)
     db.session.delete(post_to_delete)
     db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('main.home'))
 
 
 @posts.route("/delete-newsletter/<int:newsletter_id>", methods=["POST"])
@@ -295,4 +296,4 @@ def delete_newsletter(newsletter_id):
     post_to_delete = Newsletter.query.get(newsletter_id)
     db.session.delete(post_to_delete)
     db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('main.home'))

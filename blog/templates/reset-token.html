@@ -38,19 +38,33 @@
           <div class="login-card card card-body form-signin w-100">
       
               <form method="POST", action="">
-                  <h1 class="h3 mb-4 mx-4 fw-normal">Please sign in.</h1>
+                  <h1 class="h3 mb-4 mx-4 fw-normal">Password Reset.</h1>
                     {{ form.hidden_tag() }}
                   
                     <div class="form-floating mb-3 w-100">
-                      {% if form.email.errors %}
-                        <input type="email" class="form-control is-invalid" id="floatingInput" placeholder="Email address", name="email">
+                      {% if form.password.errors %}
+                        <input type="password" class="form-control is-invalid" id="floatingInput" placeholder="Password", name="password">
                         <div class="invalid-feedback">
-                          {% for error in form.email.errors %}
+                          {% for error in form.password.errors %}
                             <span><small style="font-size: 11px;">{{ error }}</small></span>
                           {% endfor %}
                         </div>
                       {% else %}
-                        <input type="email" class="form-control" id="floatingInput" placeholder="Email address", name="email">
+                        <input type="password" class="form-control" id="floatingInput" placeholder="Password", name="password">
+                      {% endif %}
+                    </div>
+
+
+                    <div class="form-floating mb-3 w-100">
+                      {% if form.confirm_password.errors %}
+                        <input type="password" class="form-control is-invalid" id="floatingPassword" placeholder="Confirm Password", name="confirm_password">
+                        <div class="invalid-feedback">
+                          {% for error in form.confirm_password.errors %}
+                            <span><small style="font-size: 11px;">{{ error }}</small></span>
+                          {% endfor %}
+                        </div>
+                      {% else %}
+                        <input type="password" class="form-control" id="floatingPassword" placeholder="Confirm Password", name="confirm_password">
                       {% endif %}
                     </div>
 

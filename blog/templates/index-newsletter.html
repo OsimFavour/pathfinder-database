@@ -25,7 +25,7 @@
               <img class="align-self-start mr-3 rounded-3" src="{{post.img_url}}" alt="Generic placeholder image">
               <!-- <img class="align-self-start mr-3 rounded-3" style="width: 64;" src="https://images.unsplash.com/photo-1483232539664-d89822fb5d3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGhvdG8lMjBiYWNrZ3JvdW5kfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="Generic placeholder image"> -->
                 <div class="post-preview">
-                  <a href="{{ url_for('show_newsletter', newsletter_id=post.id) }}">
+                  <a href="{{ url_for('posts.show_newsletter', newsletter_id=post.id) }}">
                     <h2 class="post-title">
                       {{post.title}}
                     </h2>
@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <form action="{{ url_for('delete_newsletter', newsletter_id=post.id) }}" method="POST">
+                                  <form action="{{ url_for('posts.delete_newsletter', newsletter_id=post.id) }}" method="POST">
                                       <input class="btn btn-danger" type="submit" value="Delete">
                                   </form>
                                 </div>
@@ -104,7 +104,7 @@
         <!-- If user id is 1 then they can see the Create New Post button -->
         {% if current_user.id == 1: %}
           <div class="clearfix">
-              <a class="btn btn-primary float-right" href="{{ url_for('add_for_newsletter') }}">Create New Post</a>
+              <a class="btn btn-primary float-right" href="{{ url_for('posts.add_for_newsletter') }}">Create New Post</a>
             
           </div>
         {% endif %}
