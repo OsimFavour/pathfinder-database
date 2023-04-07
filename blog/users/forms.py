@@ -1,6 +1,12 @@
+from flask_wtf import FlaskForm
+from blog.models import User 
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Length, Email, EqualTo ,ValidationError
+
+
 class SearchForm(FlaskForm):
     searched = StringField("Searched", validators=[DataRequired()])
-    
+
 
 class RegisterForm(FlaskForm):
     name = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
