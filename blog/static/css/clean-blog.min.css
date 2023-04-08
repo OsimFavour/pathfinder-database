@@ -159,8 +159,20 @@ h2.about-title {
     margin-top: 33px;
 }
 
+
+/* SIDE BAR */
 .space-bar {
     margin-left: 120px !important;
+}
+
+@media (max-width: 1000px) {
+
+
+.space-bar {
+    margin-left: 120px !important;
+    margin-right: 120px !important;
+}
+
 }
 
 /* LOGIN & REGISTER FORM */

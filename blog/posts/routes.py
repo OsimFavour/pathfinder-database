@@ -314,6 +314,7 @@ def search():
         query = form.searched.data
         all_posts = search_posts(query)
         return render_template("search.html", form=form, searched=query, posts=all_posts)
+    return render_template("errors/400.html"), 400
 
 
 @posts.route("/post/<int:post_id>")
