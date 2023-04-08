@@ -7,6 +7,8 @@ from flask_login import LoginManager, current_user
 from flask_gravatar import Gravatar
 from flask_mail import Mail
 from functools import wraps
+from blog.config import Config
+
 
 def admin_only(f):
     @wraps(f)
@@ -14,39 +16,45 @@ def admin_only(f):
         if current_user.id != 1:
             return abort(403)
         return f(*args, **kwargs)
+
     return decorated_function
 
 
-app = Flask(__name__)
-app.app_context().push()
 
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-
-##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-ckeditor = CKEditor(app)
-Bootstrap(app)
-
-
-mail = Mail(app)
-
-
+db = SQLAlchemy()
+ckeditor = CKEditor()
+Bootstrap()
 login_manager = LoginManager()
-login_manager.init_app(app)
+mail = Mail()
 
-from blog.users.routes import users
-from blog.posts.routes import posts
-from blog.main.routes import main
+
+
 
 login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
 
-gravatar = Gravatar(app, size=100, rating="g", default="retro", force_default=False, force_lower=False, use_ssl=False, base_url=None)
+gravatar = Gravatar(app, size=100, rating="g", default="retro", force_default=False, force_lower=False, use_ssl=False,
+                    base_url=None)
 
 
-app.register_blueprint(users)
-app.register_blueprint(posts)
-app.register_blueprint(main)
+
+def create_app(config_class=Config):
+    
+    app = Flask(__name__)
+    app.app_context().push()
+    app.config.from_object(Config)
+    
+    db.init_app(app)
+    ckeditor.init_app(app)
+    Bootstrap().init_app(app)
+    login_manager.init_app(app)
+    mail.init_app(app)
+    
+    
+    from blog.users.routes import users
+    from blog.posts.routes import posts
+    from blog.main.routes import main
+    
+    app.register_blueprint(users)
+    app.register_blueprint(posts)
+    app.register_blueprint(main)
