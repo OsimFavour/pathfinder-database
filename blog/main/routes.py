@@ -1,19 +1,15 @@
 from io import BytesIO
 from flask import render_template, send_file, request, Blueprint
 from flask_login import current_user
-from blog import app, db
-from blog.users.forms import SearchForm
+from blog import db
 from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Upload
+
 
 main = Blueprint("main", __name__)
 
 
-# Passing searched data to the navbar
-@app.context_processor
-def base():
-    form = SearchForm()
-    return dict(form=form)
 
+# SHOW POSTS
 
 @main.route('/')
 def home():
@@ -69,21 +65,6 @@ def download(upload_id):
     return send_file(BytesIO(upload.data), attachment_filename=upload.filename, as_attachment=True)
 
 
-@main.route("/search", methods=["POST"])
-def search():
-    form = SearchForm()
-    if form.validate_on_submit():
-        searched_post = form.searched.data
-        posts = [
-            PurposePost.query.filter(PurposePost.body.like("%" + searched_post + "%")), 
-            RelationshipPost.query.filter(RelationshipPost.body.like("%" + searched_post + "%")), 
-            Fiction.query.filter(Fiction.body.like("%" + searched_post + "%")), 
-            Newsletter.query.filter(Newsletter.body.like("%" + searched_post + "%"))
-            ]
-        for post in posts:
-            blog_posts = post.order_by(posts.title).all()
-            # ordered_posts = posts.order_by(post.title).all()
-        return render_template("search.html", form=form, searched=searched_post, posts=blog_posts)
 
 
 # @app.route("/search", methods=["POST"])
