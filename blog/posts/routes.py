@@ -1,15 +1,14 @@
-from flask import render_template, url_for, flash, redirect, abort, Blueprint
+from flask import render_template, url_for, flash, redirect, abort, current_app, Blueprint
 from flask_login import current_user, login_required
 from blog import db, admin_only
 from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Comment
-from blog.posts.forms import CreatePostForm, CommentForm
+from blog.posts.forms import CreatePostForm, CommentForm, SearchForm
+from blog.posts.utils import search_posts
 from bs4 import BeautifulSoup
 
 
 posts = Blueprint("posts", __name__)
 
-
-# SHOW POSTS
 
 @posts.route("/purpose-post/<int:purpose_post_id>", methods=["GET", "POST"])
 @login_required
@@ -297,3 +296,45 @@ def delete_newsletter(newsletter_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for('main.home'))
+
+
+# SEARCH POSTS
+
+# Passing searched data to the navbar
+@current_app.context_processor
+def base():
+    form = SearchForm()
+    return dict(form=form)
+
+
+@posts.route("/search", methods=["POST"])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        query = form.searched.data
+        all_posts = search_posts(query)
+        return render_template("search.html", form=form, searched=query, posts=all_posts)
+
+
+@posts.route("/post/<int:post_id>")
+def show_searched_post(post_id):
+    post = None
+
+    purpose_post = PurposePost.query.filter_by(id=post_id).first()
+    relationship_post = RelationshipPost.query.filter_by(id=post_id).first()
+    fiction_post = Fiction.query.filter_by(id=post_id).first()
+    newsletters = Newsletter.query.filter_by(id=post_id).first()
+
+    if purpose_post:
+        post = purpose_post
+    elif relationship_post:
+        post = relationship_post
+    elif fiction_post:
+        post = fiction_post
+    elif newsletters:
+        post = newsletters
+
+    if not post:
+        return render_template("404.html"), 404
+    
+    return render_template("post.html", post=post)
