@@ -102,47 +102,50 @@
       <div class="col-md-4">
         <div class="position-sticky" style="top: 2rem;">
           <div class="card card-body rounded space-bar" style="border-radius: 1rem !important;">
-                <ul class="nav nav-pills flex-column mb-auto">
-                  <li class="nav-item">
-                    <a href="{{url_for('main.purpose')}}" class="nav-link post-subtitle" aria-current="page">
-                      <!-- <i class="fal fa-rectangle-landscape" style="color: #e2e5e9;"></i> -->
-                      <!-- <span class="fa-stack fa-lg">
-                        <i class="fa-duotone fa-clock-two fa-2xs"></i>
-                        <i class="fas fa-circle fa-stack-2x"></i>
-                        <i class="fa-thin fa-calendar"></i>
-                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                      </span> -->
-                      <i class="fas fa-globe fa-fw me-3"></i>
-                      Purpose
-                      
-                    </a>
-                  </li>
-                  <li>
-                    <a href="{{url_for('main.relationship')}}" class="nav-link link-dark">
-                      <i class="fas fa-users fa-fw me-3"></i>
-                      Relationships
-                    </a>
-                  </li>
-                  <li>
-                    <a href="{{url_for('main.fiction')}}" class="nav-link link-dark">
-                      <i class="fas fa-tachometer-alt fa-fw me-3"></i>
-                      Fiction
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="nav-link link-dark">
-                      <i class="fas fa-chart-pie fa-fw me-3"></i>
-                      Others
-                    </a>
-                  </li>
-                  <li>
-                    <a href="{{url_for('main.newsletter')}}" class="nav-link link-dark">
-                      <i class="fas fa-newspaper fa-fw me-3"></i>
-                      Newsletters
-                    </a>
-                  </li>
-                </ul>
-              </div>
+            <ul class="nav nav-pills flex-column mb-auto">
+              <li class="nav-item tip-element">
+                <a href="{{url_for('main.purpose')}}" class="nav-link post-subtitle" aria-current="page" title="Find Purpose" data-bs-toggle="tooltip" data-bs-placement="right">
+                  <div class="side-size">
+                    <i class="fas fa-globe fa-fw me-3"></i>
+                    <span class="inviscible-size">Purpose</span>
+                  </div> 
+                  
+                </a>
+              </li>
+              <li class="tip-element">
+                <a href="{{url_for('main.relationship')}}" class="nav-link link-dark" title="Sex & Relationships" data-bs-toggle="tooltip" data-bs-placement="right">
+                  <div class="side-size">
+                    <i class="fas fa-users fa-fw me-3"></i>
+                    <span class="inviscible-size">Relationships</span> 
+                  </div> 
+                </a>
+              </li>
+              <li class="tip-element">
+                <a href="{{url_for('main.fiction')}}" class="nav-link link-dark" title="Best Stories" data-bs-toggle="tooltip" data-bs-placement="right">
+                  <div class="side-size">
+                    <i class="fas fa-tachometer-alt fa-fw me-3"></i>
+                    <span class="inviscible-size">Fiction</span> 
+                  </div> 
+                </a>
+              </li>
+              <li class="tip-element">
+                <a href="#" class="nav-link link-dark" title="Books & Others" data-bs-toggle="tooltip" data-bs-placement="right">
+                  <div class="side-size">
+                    <i class="fas fa-chart-pie fa-fw me-3"></i>
+                    <span class="inviscible-size">Others</span> 
+                  </div> 
+                </a>
+              </li>
+              <li class="tip-element">
+                <a href="{{url_for('main.newsletter')}}" class="nav-link link-dark" title="Newsletters" data-bs-toggle="tooltip" data-bs-placement="right">
+                  <div class="side-size">
+                    <i class="fas fa-newspaper fa-fw me-3"></i>
+                    <span class="inviscible-size">Newsletters</span> 
+                  </div> 
+                </a>
+              </li>
+            </ul>
+          </div>
                 <hr>
             </p>
           </div>
