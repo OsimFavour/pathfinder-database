@@ -142,7 +142,6 @@ h2.about-title {
     font-size: 20px;
 }
   
-
 .about-heading {
     font-size: 24px;
     font-weight: 600;
@@ -161,19 +160,38 @@ h2.about-title {
 
 
 /* SIDE BAR */
+
 .space-bar {
     margin-left: 120px !important;
 }
 
-@media (max-width: 1000px) {
+.side-size {
+    font-size: 17px;
+}
 
-
+/* This query is to reduce the large margin thus making it properly centred at phone size  */
+@media (max-width: 767px) {
 .space-bar {
     margin-left: 120px !important;
     margin-right: 120px !important;
+    }
 }
 
+/* This media query is for the side-bar write up to remain inviscible at some screen breakpoints */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .inviscible-size {
+        display: none;
+    }
 }
+
+/*  This media query is to reduce the font size of the side bar when it reaches a certain breakpoint */
+@media screen and (min-width: 992px) and (max-width: 1199px){
+    .side-size {
+        font-size: 11.5px;
+        font-weight: bold;
+    }
+}
+
 
 /* LOGIN & REGISTER FORM */
 
