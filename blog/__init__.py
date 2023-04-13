@@ -40,7 +40,7 @@ client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret
 google_flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
     "google_client_secret.json",
     scopes=["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"],
-    redirect_uri="http://localhost:5000/login?provider=google"
+    redirect_uri="http://127.0.0.1:5000/login?provider=google"
 )
 
 
