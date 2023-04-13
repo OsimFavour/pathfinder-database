@@ -1,4 +1,5 @@
 import os
+import json
 
 
 class Config:
@@ -13,3 +14,11 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get("MY_EMAIL")
     MAIL_PASSWORD = os.environ.get("MY_PASSWORD")
+
+
+    with open("secrets/client_secret.json") as file:
+        content = file.read()
+        # content = json.load(file)
+
+    # Set environment variable for client secret
+    os.environ["CLIENT_SECRET"] = content

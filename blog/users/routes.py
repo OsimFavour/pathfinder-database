@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request, Blueprint
+from flask import render_template, redirect, url_for, flash, abort, session, request, Blueprint
 from flask_login import current_user, login_user, logout_user
 from blog import db
 from blog.models import User
@@ -7,6 +7,19 @@ from blog.users.forms import RegisterForm, LoginForm, RequestResetForm, ResetPas
 from werkzeug.security import generate_password_hash, check_password_hash
  
 users = Blueprint("users", __name__)
+
+def login_is_required(function):
+    def wrapper(*args, **kwargs):
+        if "google_id" not in session:
+            return abort(401) # Authorization required
+        else:
+            return function()
+    return wrapper
+
+
+users.route("/callback")
+def callback():
+    pass
 
 
 @users.route('/register', methods=["GET", "POST"]) 
@@ -37,6 +50,7 @@ def register():
 
 @users.route('/login', methods=["GET", "POST"])
 def login():
+    session["google_id"] = "Test"
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -52,11 +66,6 @@ def login():
             login_user(user)
             next_page = request.args.get("next")
             print(next_page)
-            # if next_page:
-            #     return redirect(next_page)
-            # # else:
-            # return redirect(url_for("main.home"))
-            # return redirect(next_page)
             return redirect(next_page) if next_page else redirect(url_for("main.home"))
     return render_template("login.html", title="Login", form=form, current_user=current_user)
 

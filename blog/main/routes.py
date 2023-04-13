@@ -3,7 +3,7 @@ from flask import render_template, send_file, request, Blueprint
 from flask_login import current_user
 from blog import db
 from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Upload
-
+from blog.users.routes import login_is_required
 
 main = Blueprint("main", __name__)
 
@@ -12,6 +12,7 @@ main = Blueprint("main", __name__)
 # SHOW POSTS
 
 @main.route('/')
+@login_is_required
 def home():
     page = request.args.get("page", 1, type=int)
     posts = PurposePost.query.order_by(PurposePost.date.desc()).paginate(page=page, per_page=5)
