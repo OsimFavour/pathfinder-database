@@ -15,10 +15,8 @@ class Config:
     MAIL_USERNAME = os.environ.get("MY_EMAIL")
     MAIL_PASSWORD = os.environ.get("MY_PASSWORD")
 
-
-    with open("secrets/client_secret.json") as file:
-        content = file.read()
-        # content = json.load(file)
-
-    # Set environment variable for client secret
-    os.environ["CLIENT_SECRET"] = content
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+    
+    GOOGLE_CLIENT_ID = "931067967702-hgr1u7l6v1ldcq769md1j8h6ijhljkdt.apps.googleusercontent.com"
+    
+    

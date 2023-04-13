@@ -1,9 +1,12 @@
 from flask import render_template, redirect, url_for, flash, abort, session, request, Blueprint
 from flask_login import current_user, login_user, logout_user
 from blog import db
+from blog import google_flow
 from blog.models import User
 from blog.users.utils import send_reset_email
 from blog.users.forms import RegisterForm, LoginForm, RequestResetForm, ResetPasswordForm
+from google.oauth2 import id_token
+from google.auth.transport import requests
 from werkzeug.security import generate_password_hash, check_password_hash
  
 users = Blueprint("users", __name__)
@@ -50,8 +53,11 @@ def register():
 
 @users.route('/login', methods=["GET", "POST"])
 def login():
-    session["google_id"] = "Test"
     form = LoginForm()
+    if request.args.get("provider") == "google":
+        authorization_url, state = google_flow.authorization_url()
+        session["state"] = state
+        return redirect(authorization_url)
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
@@ -67,6 +73,23 @@ def login():
             next_page = request.args.get("next")
             print(next_page)
             return redirect(next_page) if next_page else redirect(url_for("main.home"))
+    elif request.args.get("state"):
+        state = session["state"]
+        google_flow.fetch_token(authorization_response=request.url)
+        if not state == request.args["state"]:
+            abort(500)   # State does not match!
+        credentials = google_flow.credentials
+        request_session = requests.session()
+        cached_session = CacheControl(request_session)
+        token_request = Request(session=cached_session)
+        id_info = id_token.verify_oauth2_token(
+            id_token=credentials._id_token,
+            request=token_request,
+            audience=app.config['GOOGLE_CLIENT_ID']
+        )
+        session['google_id'] = id_info.get('sub')
+        session['name'] = id_info.get('name')
+        return redirect(url_for('home'))
     return render_template("login.html", title="Login", form=form, current_user=current_user)
 
 

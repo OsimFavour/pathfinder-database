@@ -8,6 +8,7 @@ from flask_gravatar import Gravatar
 from flask_mail import Mail
 from functools import wraps
 from blog.config import Config
+from google_auth_oauthlib.flow import Flow
 
 
 def admin_only(f):
@@ -27,6 +28,29 @@ mail = Mail()
 
 login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
+
+client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
+
+# google_flow = Flow.from_client_secrets_file(
+#     client_secrets_file=client_secrets_file,
+#     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.profile", "openid"],
+#     redirect_uri="http://127.0.0.1:5000/login?provider=google"
+#     )
+
+google_flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+    "google_client_secret.json",
+    scopes=["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"],
+    redirect_uri="http://127.0.0.1:5000/login?provider=google"
+)
+
+
+def login_is_required(function):
+    def wrapper(*args, **kwargs):
+        if "google_id" not in session:
+            return abort(401)
+        else:
+            return function()
+    return wrapper
 
 
 def create_app(config_class=Config):
