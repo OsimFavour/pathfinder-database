@@ -1,14 +1,15 @@
 import os
-from flask import Flask, abort
+import pathlib
+from flask import Flask, abort, session
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_gravatar import Gravatar
 from flask_mail import Mail
-from functools import wraps
 from blog.config import Config
-from google_auth_oauthlib.flow import Flow
+from functools import wraps
+from google_auth_oauthlib.flow import Flow, InstalledAppFlow
 
 
 def admin_only(f):
@@ -20,6 +21,16 @@ def admin_only(f):
     return decorated_function
 
 
+def google_login_required(function):
+    @wraps(function)
+    def google_wrapper(*args, **kwargs):
+        if "google_id" not in session:
+            return abort(401)
+        else:
+            return function()
+    return google_wrapper
+
+
 db = SQLAlchemy()
 ckeditor = CKEditor()
 bootstrap = Bootstrap()
@@ -29,28 +40,19 @@ mail = Mail()
 login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
 
+
+GOOGLE_CLIENT_ID = "931067967702-hgr1u7l6v1ldcq769md1j8h6ijhljkdt.apps.googleusercontent.com"
+
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 
-# google_flow = Flow.from_client_secrets_file(
-#     client_secrets_file=client_secrets_file,
-#     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.profile", "openid"],
-#     redirect_uri="http://127.0.0.1:5000/login?provider=google"
-#     )
+print(client_secrets_file)
+print(os.getcwd())
 
-google_flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-    "google_client_secret.json",
-    scopes=["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"],
-    redirect_uri="http://127.0.0.1:5000/login?provider=google"
+google_flow = Flow.from_client_secrets_file(
+    "secrets/client_secret.json",
+    scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
+    redirect_uri="http://127.0.0.1:5000/callback?provider=google"
 )
-
-
-def login_is_required(function):
-    def wrapper(*args, **kwargs):
-        if "google_id" not in session:
-            return abort(401)
-        else:
-            return function()
-    return wrapper
 
 
 def create_app(config_class=Config):
@@ -58,7 +60,8 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.app_context().push()
     app.config.from_object(Config)
-    
+
+
     db.init_app(app)
     ckeditor.init_app(app)
     bootstrap.init_app(app)
@@ -81,3 +84,8 @@ def create_app(config_class=Config):
     app.register_blueprint(errors)
 
     return app
+
+
+
+
+
