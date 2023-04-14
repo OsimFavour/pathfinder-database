@@ -1,31 +1,19 @@
+import requests
 from flask import render_template, redirect, url_for, flash, abort, session, request, Blueprint
 from flask_login import current_user, login_user, logout_user
-from blog import db
-from blog import google_flow
+from blog import GOOGLE_CLIENT_ID, google_flow, db
 from blog.models import User
 from blog.users.utils import send_reset_email
 from blog.users.forms import RegisterForm, LoginForm, RequestResetForm, ResetPasswordForm
 from google.oauth2 import id_token
-from google.auth.transport import requests
+from google.auth.transport.requests import Request
+from cachecontrol.wrapper import CacheControl
 from werkzeug.security import generate_password_hash, check_password_hash
  
 users = Blueprint("users", __name__)
 
-def login_is_required(function):
-    def wrapper(*args, **kwargs):
-        if "google_id" not in session:
-            return abort(401) # Authorization required
-        else:
-            return function()
-    return wrapper
 
-
-users.route("/callback")
-def callback():
-    pass
-
-
-@users.route('/register', methods=["GET", "POST"]) 
+@users.route('/register', methods=['GET', 'POST']) 
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -53,11 +41,14 @@ def register():
 
 @users.route('/login', methods=["GET", "POST"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.home"))
+    # if request.args.get("provider") == "google":
+    #     authorization_url, state = google_flow.authorization_url()
+    #     session["state"] = state
+    #     return redirect(authorization_url)
+    # If the request is not from Google, return a login form
     form = LoginForm()
-    if request.args.get("provider") == "google":
-        authorization_url, state = google_flow.authorization_url()
-        session["state"] = state
-        return redirect(authorization_url)
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
@@ -73,28 +64,48 @@ def login():
             next_page = request.args.get("next")
             print(next_page)
             return redirect(next_page) if next_page else redirect(url_for("main.home"))
-    elif request.args.get("state"):
-        state = session["state"]
-        google_flow.fetch_token(authorization_response=request.url)
-        if not state == request.args["state"]:
-            abort(500)   # State does not match!
-        credentials = google_flow.credentials
-        request_session = requests.session()
-        cached_session = CacheControl(request_session)
-        token_request = Request(session=cached_session)
-        id_info = id_token.verify_oauth2_token(
-            id_token=credentials._id_token,
-            request=token_request,
-            audience=app.config['GOOGLE_CLIENT_ID']
-        )
-        session['google_id'] = id_info.get('sub')
-        session['name'] = id_info.get('name')
-        return redirect(url_for('home'))
-    return render_template("login.html", title="Login", form=form, current_user=current_user)
+    return render_template('login.html', title='Login', form=form, current_user=current_user)
+
+
+@users.route('/google-login')
+def google_login():
+    state = session.get("state")
+    if state is None:
+        flash("Session state is missing. Please try again", "danger")
+        return redirect(url_for("users.login"))
+    authorization_url, state = google_flow.authorization_url()
+    session["state"] = state
+    return redirect(authorization_url)
+
+users.route("/callback")
+def callback():
+    # state = session.get("state")
+    # if state is None:
+    #     flash("Session state is missing. Please try again", "danger")
+    #     return redirect(url_for("users.login"))
+    google_flow.fetch_token(authorization_response=request.url)
+    state = session["state"] 
+    if not state == request.args["state"]:
+        abort(500)   # State does not match!
+    credentials = google_flow.credentials
+    request_session = requests.session()
+    cached_session = CacheControl(request_session)
+    token_request = Request(session=cached_session)
+    id_info = id_token.verify_oauth2_token(
+        id_token=credentials._id_token,
+        request=token_request,
+        audience=GOOGLE_CLIENT_ID
+        # audience=app.config['GOOGLE_CLIENT_ID']
+    )
+    session['google_id'] = id_info.get('sub')
+    session['name'] = id_info.get('name')
+    return redirect(url_for('main.home'))
 
 
 @users.route('/logout')
 def logout():
+    if session.get("state") == request.args.get("state"):
+        session.clear()
     logout_user()
     return redirect(url_for('main.home'))
 
