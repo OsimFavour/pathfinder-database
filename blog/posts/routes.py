@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, abort, current_app, Blueprint
 from flask_login import current_user, login_required
-from blog import db, admin_only
+from blog import db, admin_only, google_login_required
 from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Comment
 from blog.posts.forms import CreatePostForm, CommentForm, SearchForm
 from blog.posts.utils import search_posts
@@ -12,6 +12,7 @@ posts = Blueprint("posts", __name__)
 
 @posts.route("/purpose-post/<int:purpose_post_id>", methods=["GET", "POST"])
 @login_required
+# @google_login_required
 def show_purpose_post(purpose_post_id):
     form = CommentForm()
     requested_post = PurposePost.query.get(purpose_post_id)
@@ -31,6 +32,7 @@ def show_purpose_post(purpose_post_id):
 
 @posts.route("/relationship/<int:relationship_post_id>", methods=["GET", "POST"])
 @login_required
+@google_login_required
 def show_relationship_post(relationship_post_id):
     form = CommentForm()
     requested_post = RelationshipPost.query.get(relationship_post_id)
@@ -50,6 +52,7 @@ def show_relationship_post(relationship_post_id):
 
 @posts.route("/fiction/<int:fiction_post_id>", methods=["GET", "POST"])
 @login_required
+@google_login_required
 def show_fiction_post(fiction_post_id):
     form = CommentForm()
     requested_post = Fiction.query.get(fiction_post_id)
@@ -69,6 +72,7 @@ def show_fiction_post(fiction_post_id):
 
 @posts.route("/newsletter/<int:newsletter_id>", methods=["GET", "POST"])
 @login_required
+@google_login_required
 def show_newsletter(newsletter_id):
     form = CommentForm()
     requested_post = Newsletter.query.get(newsletter_id)
