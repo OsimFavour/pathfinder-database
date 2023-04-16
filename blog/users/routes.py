@@ -1,11 +1,12 @@
 import requests
 from flask import render_template, redirect, url_for, flash, abort, session, request, Blueprint
 from flask_login import current_user, login_user, logout_user
-from blog import GOOGLE_CLIENT_ID, google_flow, db
+from blog import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI, JAVASCRIPT_ORIGINS, google_flow, db
 from blog.models import User
 from blog.users.utils import send_reset_email
 from blog.users.forms import RegisterForm, LoginForm, RequestResetForm, ResetPasswordForm
 from google.oauth2 import id_token
+from google_auth_oauthlib.flow import Flow
 from google.auth.transport.requests import Request
 from cachecontrol.wrapper import CacheControl
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -43,10 +44,11 @@ def register():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
-    # if request.args.get("provider") == "google":
-    #     authorization_url, state = google_flow.authorization_url()
-    #     session["state"] = state
-    #     return redirect(authorization_url)
+    if request.method == "POST":
+        authorization_url, state = google_flow.authorization_url()
+        session["state"] = state
+        # print(authorization_url)
+        return redirect(authorization_url)
     # If the request is not from Google, return a login form
     form = LoginForm()
     if form.validate_on_submit():
@@ -67,39 +69,77 @@ def login():
     return render_template('login.html', title='Login', form=form, current_user=current_user)
 
 
-@users.route('/google-login')
-def google_login():
-    state = session.get("state")
-    if state is None:
-        flash("Session state is missing. Please try again", "danger")
-        return redirect(url_for("users.login"))
-    authorization_url, state = google_flow.authorization_url()
-    session["state"] = state
-    return redirect(authorization_url)
+# @users.route('/google-login')
+# def google_login():
+#     state = session.get("state")
+#     if state is None:
+#         flash("Session state is missing. Please try again", "danger")
+#         return redirect(url_for("users.login"))
+#     authorization_url, state = google_flow.authorization_url()
+#     session["state"] = state
+#     return redirect(authorization_url)
 
-users.route("/callback")
+@users.route("/callback")
 def callback():
-    # state = session.get("state")
-    # if state is None:
-    #     flash("Session state is missing. Please try again", "danger")
-    #     return redirect(url_for("users.login"))
-    google_flow.fetch_token(authorization_response=request.url)
-    state = session["state"] 
-    if not state == request.args["state"]:
-        abort(500)   # State does not match!
-    credentials = google_flow.credentials
-    request_session = requests.session()
-    cached_session = CacheControl(request_session)
-    token_request = Request(session=cached_session)
-    id_info = id_token.verify_oauth2_token(
-        id_token=credentials._id_token,
-        request=token_request,
-        audience=GOOGLE_CLIENT_ID
-        # audience=app.config['GOOGLE_CLIENT_ID']
-    )
-    session['google_id'] = id_info.get('sub')
-    session['name'] = id_info.get('name')
-    return redirect(url_for('main.home'))
+    try:
+        google_flow.fetch_token(authorization_response=request.url)
+        state = session.pop("state", None)
+        if state is None or state != request.args.get("state"):
+            abort(400, "Invalid state parameter")
+
+        # state = session["state"] 
+        if not state == request.args["state"]:
+            abort(500)   # State does not match!
+        credentials = google_flow.credentials
+        request_session = requests.session()
+        cached_session = CacheControl(request_session)
+        token_request = Request(session=cached_session)
+        id_info = id_token.verify_oauth2_token(
+            id_token=credentials._id_token,
+            request=token_request,
+            audience=GOOGLE_CLIENT_ID
+        )
+
+        # Store the user's ID and name in the session
+        session["google_id"] = id_info["sub"]
+        session["name"] = id_info["name"]
+        session["email"] = id_info['email']
+        # user_name = google_user['name']
+
+        # Redirect to the main page
+        # login_user(user)
+        next_page = request.args.get("next")
+        print(next_page)
+        return redirect(next_page) if next_page else redirect(url_for("main.home"))
+
+    except ValueError as e:
+        # Invalid token
+        abort(400, str(e))
+
+    except Exception as e:
+        # Other error
+        print(e)
+        abort(500, "An error occurred while processing the request")
+
+# users.route("/callback")
+# def callback():
+#     google_flow.fetch_token(authorization_response=request.url)
+#     state = session["state"] 
+#     if not state == request.args["state"]:
+#         abort(500)   # State does not match!
+#     credentials = google_flow.credentials
+#     request_session = requests.session()
+#     cached_session = CacheControl(request_session)
+#     token_request = Request(session=cached_session)
+#     id_info = id_token.verify_oauth2_token(
+#         id_token=credentials._id_token,
+#         request=token_request,
+#         audience=GOOGLE_CLIENT_ID
+#         # audience=app.config['GOOGLE_CLIENT_ID']
+#     )
+#     session['google_id'] = id_info.get('sub')
+#     session['name'] = id_info.get('name')
+#     return redirect(url_for('main.home'))
 
 
 @users.route('/logout')
