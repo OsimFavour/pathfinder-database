@@ -41,7 +41,11 @@ login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
 
 
-GOOGLE_CLIENT_ID = "931067967702-hgr1u7l6v1ldcq769md1j8h6ijhljkdt.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = "635446910036-1qif2dq6etue3iq01ur88hvcgjsv2vhp.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
+REDIRECT_URI = "http://127.0.0.1:5000/callback"
+JAVASCRIPT_ORIGINS = "http://127.0.0.1:5000"
+
 
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 
@@ -51,7 +55,7 @@ print(os.getcwd())
 google_flow = Flow.from_client_secrets_file(
     "secrets/client_secret.json",
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://127.0.0.1:5000/callback?provider=google"
+    redirect_uri="http://127.0.0.1:5000/callback"
 )
 
 
