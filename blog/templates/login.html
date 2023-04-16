@@ -75,13 +75,16 @@
                       <button class="w-100 button btn-lg btn-primary me-6 mb-2 mx-auto" type="submit"><div class="sign-in">Sign in</div></button>
                   </div>
                   
-                  <div class="w-100">
-                      <a href="{{ url_for('users.google_login') }}">
+                  <form action="{{ url_for('users.login') }}" method="POST">
+                    <div class="w-100">
+                      <a href="">
                         <button type="submit" class="google w-100">
                           <img class="google-img" src="{{ url_for('static', filename='img/google-button2.png')}}" alt="google button">
                         </button>
                       </a>
                     </div>
+                  </form>
+                  
                   <hr>
                   <div>
                       <small class="text-muted">
