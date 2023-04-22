@@ -35,7 +35,7 @@
         <div class="login-form col-md-4 mt-5">
           <div class="login-card card card-body form-signin w-100">
 
-            <form method="POST" action="{{ url_for('users.register') }}">
+            <form method="POST" action="">
               <h1 class="h3 mb-4 fw-normal">Create Your Account!</h1>
 
                 {{ form.hidden_tag() }}
@@ -92,19 +92,24 @@
                   {% endif %}
                 </div>
 
-                <div>
+                <div class="mb-n1">
                   <button class="w-100 button btn-lg btn-primary mb-2" type="submit"><div class="sign-in">Sign Up</div></button>
                 </div>
-                <div class="w-100 mb-2">
+              </form>
+
+              <form action="{{ url_for('users.google_login') }}" method="POST">
+                <div class="w-100 mb-2 mt-n3">
                   <button type="submit" class="google w-100">
                     <img class="google-img" src="{{ url_for('static', filename='img/google-button2.png')}}" alt="google button">
                   </button>
                 </div>
+              </form>
+
                 <hr>
                 <small class="text-muted">
                   Already Have An Account?  <a class="ml-2" href="{{ url_for('users.login') }}">Sign In Here</a>
                 </small>
-            </form>
+            
           </div>
         </div>
       </div>
