@@ -46,12 +46,6 @@ def register():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
-    if request.method == "POST":
-        authorization_url, state = google_flow.authorization_url()
-        session["state"] = state
-        # print(authorization_url)
-        return redirect(authorization_url)
-    # If the request is not from Google, return a login form
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -71,11 +65,23 @@ def login():
     return render_template('login.html', title='Login', form=form, current_user=current_user)
 
 
+@users.route("/google-register", methods=["GET", "POST"])
+def google_register():
+    if request.method == "POST":
+        authorization_url, state = google_flow.authorization_url(prompt="consent")
+        session["state"] = state
+        session["register"] = True  # Set flag to indicate registration
+        print(state)
+        return redirect(authorization_url)
+    return redirect(url_for("main.home"))
+
+
 @users.route("/google-login", methods=["GET", "POST"])
 def google_login():
     if request.method == "POST":
-        authorization_url, state = google_flow.authorization_url()
+        authorization_url, state = google_flow.authorization_url(prompt="select_account")
         session["state"] = state
+        session["register"] = False   # Set flag to indicate login
         print(state)
         return redirect(authorization_url)
     return redirect(url_for("main.home"))
@@ -86,7 +92,8 @@ def callback():
     try:
         google_flow.fetch_token(authorization_response=request.url)
         state = session["state"]
-        if state is None or state != request.args.get("state"):
+        is_registering = session["register"]    # Get flag to determine flow
+        if not state == request.args.get("state"):
             abort(400)
         credentials = google_flow.credentials
         request_session = requests.session()
@@ -110,9 +117,11 @@ def callback():
             salt_length=8
         )
 
-        if user is None:
-            # flash("Register or Authenticate Here!")
-            # return redirect(url_for("register"))
+        if user and is_registering:
+            flash("You've already signed up with that email, log in instead!", "danger")
+
+        elif user is None and is_registering:
+            # Register User
             user = User(
                 google_id=google_info["sub"], 
                 name=google_info['name'], 
@@ -120,6 +129,15 @@ def callback():
                 password=hash_and_salted_google_password
                 )
             db.session.add(user)
+        elif user is None and not is_registering:
+            # User is logging in but is not registered
+            flash("You need to register")
+            return redirect(url_for("register"))
+        else:
+            # User is logging in
+            if not check_password_hash(user.password, password):
+                flash("Incorrect password")
+                return redirect(url_for("login"))
 
         user.google_id = google_info["sub"]
         db.session.commit()
