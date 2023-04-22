@@ -10,6 +10,7 @@ from blog.users.forms import RegisterForm, LoginForm, RequestResetForm, ResetPas
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from google.auth.transport.requests import Request
+from sqlalchemy.exc import IntegrityError
 from cachecontrol.wrapper import CacheControl
 from werkzeug.security import generate_password_hash, check_password_hash
  
@@ -68,7 +69,7 @@ def login():
 @users.route("/google-register", methods=["GET", "POST"])
 def google_register():
     if request.method == "POST":
-        authorization_url, state = google_flow.authorization_url(prompt="consent")
+        authorization_url, state = google_flow.authorization_url()
         session["state"] = state
         session["register"] = True  # Set flag to indicate registration
         print(state)
@@ -79,7 +80,7 @@ def google_register():
 @users.route("/google-login", methods=["GET", "POST"])
 def google_login():
     if request.method == "POST":
-        authorization_url, state = google_flow.authorization_url(prompt="select_account")
+        authorization_url, state = google_flow.authorization_url()
         session["state"] = state
         session["register"] = False   # Set flag to indicate login
         print(state)
@@ -131,13 +132,13 @@ def callback():
             db.session.add(user)
         elif user is None and not is_registering:
             # User is logging in but is not registered
-            flash("You need to register")
-            return redirect(url_for("register"))
+            flash("You need to register here", "info")
+            return redirect(url_for("users.register"))
         else:
             # User is logging in
             if not check_password_hash(user.password, password):
-                flash("Incorrect password")
-                return redirect(url_for("login"))
+                flash("Incorrect password", "danger")
+                return redirect(url_for("users.login"))
 
         user.google_id = google_info["sub"]
         db.session.commit()
@@ -156,6 +157,11 @@ def callback():
     except ValueError as e:
         # Invalid token
         abort(400, str(e))
+
+    except IntegrityError:
+        db.session.rollback()
+        flash("Username already exists, please choose a different name.", "info")
+        return redirect(url_for("users.register"))
 
     except Exception as e:
         # Other error
