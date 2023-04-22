@@ -7,14 +7,8 @@
 <style>
   * {
     margin: 0;
-    padding: 0;
   }
 
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
-  
   .masthead {
     height: 120vh;
   }
@@ -47,7 +41,7 @@
 
           <div class="login-card card card-body form-signin w-100">
       
-              <form method="POST", action="{{ url_for('users.login') }}">
+                <form method="POST", action="">
                   <h1 class="h3 mb-4 mx-4 fw-normal">Please sign in.</h1>
                     {{ form.hidden_tag() }}
                   
@@ -78,15 +72,16 @@
                   </div>
                   
                   <div class="loginbox-forgot mt-1 mb-2">
-                      <a href="{{ url_for("users.reset_request") }}">Forgot Password?</a>
+                      <a href="{{ url_for('users.reset_request') }}">Forgot Password?</a>
                   </div> 
 
-                  <div>
+                  <div class="mb-n1">
                       <button class="w-100 button btn-lg btn-primary me-6 mb-2 mx-auto" type="submit"><div class="sign-in">Sign in</div></button>
                   </div>
+                </form>
                   
-                  <form action="{{ url_for('users.login') }}" method="POST">
-                    <div class="w-100">
+                  <form action="{{ url_for('users.google_login') }}" method="POST">
+                    <div class="w-100 mt-n3">
                       <a href="">
                         <button type="submit" class="google w-100">
                           <img class="google-img" src="{{ url_for('static', filename='img/google-button2.png')}}" alt="google button">
@@ -101,7 +96,7 @@
                           Need An Account? <a class="ml-2" href="{{ url_for('users.register') }}">Sign Up Now</a>
                       </small>
                   </div>
-                </form>
+                
           </div>
       </div>
       </div>
@@ -130,6 +125,7 @@
   </div> -->
 
 
+{% include "footer.html" %}
 {% endblock %}
 
 </header>
