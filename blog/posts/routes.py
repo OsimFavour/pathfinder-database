@@ -23,7 +23,7 @@ def show_purpose_post(purpose_post_id):
         new_comment = Comment(
             text=form.comment.data,
             comment_author=current_user,
-            parent_post=requested_post
+            purpose_parent_post=requested_post
         )
         db.session.add(new_comment)
         db.session.commit()
@@ -43,7 +43,7 @@ def show_relationship_post(relationship_post_id):
         new_comment = Comment(
             text=form.comment.data,
             comment_author=current_user,
-            parent_post=requested_post
+            relationship_parent_post=requested_post
         )
         db.session.add(new_comment)
         db.session.commit()
@@ -63,7 +63,7 @@ def show_fiction_post(fiction_post_id):
         new_comment = Comment(
             text=form.comment.data,
             comment_author=current_user,
-            parent_post=requested_post
+            fiction_parent_post=requested_post
         )
         db.session.add(new_comment)
         db.session.commit()
