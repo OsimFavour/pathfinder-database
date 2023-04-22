@@ -10,10 +10,6 @@
     padding: 0;
   }
 
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
   
   .masthead {
     height: 140vh;
@@ -33,6 +29,19 @@
         </div>
 
         <div class="login-form col-md-4 mt-5">
+
+          <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %} 
+          </div>
+
           <div class="login-card card card-body form-signin w-100">
 
             <form method="POST" action="">
@@ -97,7 +106,7 @@
                 </div>
               </form>
 
-              <form action="{{ url_for('users.google_login') }}" method="POST">
+              <form action="{{ url_for('users.google_register') }}" method="POST">
                 <div class="w-100 mb-2 mt-n3">
                   <button type="submit" class="google w-100">
                     <img class="google-img" src="{{ url_for('static', filename='img/google-button2.png')}}" alt="google button">
@@ -126,6 +135,7 @@
     </div>
   </div> -->
 
+{% include "footer.html" %}
 {% endblock %}
 
 </header>
