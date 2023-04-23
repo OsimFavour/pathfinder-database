@@ -11,6 +11,7 @@ def load_user(user_id):
     return User.query.get(int(user_id)) 
 
 
+
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -111,14 +112,13 @@ class Newsletter(db.Model):
     author = relationship("User", back_populates="newsletters")
 
     title = db.Column(db.String(250), nullable=False)
-    subtitle = db.Column(db.String(250), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     body = db.Column(db.Text, nullable=False)
-    img_url = db.Column(db.String(250), nullable=False)
 
     def __repr__(self):
         return f"Post('{self.author}', '{self.title}', '{self.date}')"
     
+# db.drop_all()
 
 class Upload(db.Model):
     __tablename__  = "book_uploads"

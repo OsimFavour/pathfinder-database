@@ -1,32 +1,47 @@
 {% include "header.html" %}
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/image-logo.png')}}')">
+  <header class="masthead" style="background-image: url({{ url_for('static', filename='img/logo.jpg')}})">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="site-heading">
-            <!-- <h1 class="cursive-logo">pathfinder.com</h1>
-            <span class="subheading" style="font-style: italic;">Find Purpose, Principle and Power.</span> -->
+            <!-- <h1 class="cursive-logo">Our Newsletters</h1> -->
+            <h1 class="">Subscribe to our Newsletters</h1>
+            <span class="subheading" style="font-style: italic;">Get Wisdom directly sent to your email.</span>
+            <section id="newsletter">
+              <div class="container">
+                <form>
+                  <input type="email" placeholder="Enter Your Email Address...">
+                  <button type="submit" class="button1">Subscribe</button>
+                </form>
+              </div>
+            </section>
+          
+            <!-- <span class="subheading" style="font-style: italic;">Find Purpose, Principle and Power.</span> -->
           </div>
         </div>
       </div>
     </div>
   </header>
+  
 
   <!-- Main Content -->
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
+        <h2 class="pb-4 mb-4 border-bottom about-heading">
+          Read our Past Newsletters.
+        </h2>
         {% for post in all_posts.items %}
           <div class="card mb-3 card-body" style="border-radius: 1rem;">
             <div class="media">
-              <img class="align-self-start mr-3 rounded-3" src="{{post.img_url}}" alt="Generic placeholder image">
+              <!-- <img class="align-self-start mr-3 rounded-3" src="{{post.img_url}}" alt="Generic placeholder image"> -->
               <!-- <img class="align-self-start mr-3 rounded-3" style="width: 64;" src="https://images.unsplash.com/photo-1483232539664-d89822fb5d3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGhvdG8lMjBiYWNrZ3JvdW5kfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="Generic placeholder image"> -->
                 <div class="post-preview">
                   <a href="{{ url_for('posts.show_newsletter', newsletter_id=post.id) }}">
-                    <h2 class="post-title">
+                    <h3 class="post-title mb-4 about-heading">
                       {{post.title}}
                     </h2>
                     <h3 class="post-subtitle">
@@ -104,7 +119,7 @@
         <!-- If user id is 1 then they can see the Create New Post button -->
         {% if current_user.id == 1: %}
           <div class="clearfix">
-              <a class="btn btn-primary float-right" href="{{ url_for('posts.add_for_newsletter') }}">Create New Post</a>
+              <a class="btn btn-primary float-right" href="{{ url_for('posts.add_for_newsletter') }}">Create Newsletter</a>
             
           </div>
         {% endif %}

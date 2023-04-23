@@ -15,6 +15,12 @@ class CreatePostForm(FlaskForm):
     submit = SubmitField("Submit Post")
 
 
+class NewsletterPostForm(FlaskForm):
+    title = StringField("Newsletter Title", validators=[DataRequired()])
+    body = CKEditorField("Newsletter Content", validators=[DataRequired()])
+    submit = SubmitField("Submit Post")
+
+
 class CommentForm(FlaskForm):
     comment = CKEditorField("Comments", validators=[DataRequired()], render_kw={"style": "font-weight: bold;"})
     submit = SubmitField("Submit Comment")

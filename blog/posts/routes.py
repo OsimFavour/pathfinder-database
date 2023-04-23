@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, abort, current_app,
 from flask_login import current_user, login_required
 from blog import db, admin_only, google_login_required
 from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Comment
-from blog.posts.forms import CreatePostForm, CommentForm, SearchForm
+from blog.posts.forms import CreatePostForm, CommentForm, SearchForm, NewsletterPostForm
 from blog.posts.utils import search_posts
 from bs4 import BeautifulSoup
 
@@ -72,7 +72,6 @@ def show_fiction_post(fiction_post_id):
 
 @posts.route("/newsletter/<int:newsletter_id>", methods=["GET", "POST"])
 @login_required
-@google_login_required
 def show_newsletter(newsletter_id):
     form = CommentForm()
     requested_post = Newsletter.query.get(newsletter_id)
@@ -145,26 +144,24 @@ def add_for_fiction():
         )
         db.session.add(new_post)
         db.session.commit()
-        return redirect(url_for("main.home"))
+        return redirect(url_for("main.fiction"))
     return render_template("make-post.html", title="Post-Fiction", form=form, current_user=current_user, add_for_fiction=True)
 
 
 @posts.route("/new-post-newsletter", methods=["GET", "POST"])
 @admin_only
 def add_for_newsletter():
-    form = CreatePostForm()
+    form = NewsletterPostForm()
     # soup = BeautifulSoup(form.body.data, "html.parser")
     if form.validate_on_submit():
         new_post = Newsletter(
             title=form.title.data,
-            subtitle=form.subtitle.data,
             body=form.body.data,
-            img_url=form.img_url.data,
             author=current_user
         )
         db.session.add(new_post)
         db.session.commit()
-        return redirect(url_for("main.home"))
+        return redirect(url_for("main.newsletter"))
     return render_template("make-post.html", title="Post-Newsletters", form=form, current_user=current_user, add_for_newsletter=True)
 
 

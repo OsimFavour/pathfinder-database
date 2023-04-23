@@ -8,7 +8,6 @@ from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Uplo
 main = Blueprint("main", __name__)
 
 
-
 # SHOW POSTS
 
 @main.route('/')
