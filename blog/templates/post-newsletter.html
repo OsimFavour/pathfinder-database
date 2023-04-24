@@ -32,6 +32,38 @@
             {{ post.body|safe }}
           <hr>
 
+          <!-- <h1>Read Next</h1> -->
+          <article class="blog-post mt-5">
+            <h3 class="about-heading">Read Next</h3>
+            <br>
+            {% for post in all_posts %}
+              <div class="card mb-3 card-body" style="border-radius: 1rem;">
+                <div class="media">
+                  <img class='align-self-start mr-3 rounded-3' src="{{post.img_url}}" alt="Generic placeholder image">
+                    <div class="post-preview">
+                      <a href="{{ url_for('posts.show_purpose_post', purpose_post_id=post.id) }}">
+                        <h2 class="about-title post-title">
+                          {{post.title}}
+                        </h2>
+                        <h3 class="about-subtitle post-subtitle">
+                          {{post.subtitle}}
+                        </h3>
+                      </a>
+                      <p class="post-meta">Posted by
+            
+                        <a href="#">{{post.author.name}}</a>
+                        on {{post.date.strftime("%B %d, %Y")}}
+                      
+                      </p>
+                    </div>
+                </div>  
+              </div>  
+            {% endfor %}
+
+
+
+          <hr>
+
   <!-- If user id is 1 then they can see the Edit Post button -->
           {% if current_user.id ==1: %}
             <div class="clearfix">
