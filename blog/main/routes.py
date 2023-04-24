@@ -13,9 +13,10 @@ main = Blueprint("main", __name__)
 @main.route('/')
 def home():
     page = request.args.get("page", 1, type=int)
-    posts = PurposePost.query.order_by(PurposePost.date.desc()).paginate(page=page, per_page=5)
+    posts = PurposePost.query.order_by(PurposePost.date.desc()).limit(4).all()
+    fiction_posts = Fiction.query.order_by(Fiction.date.desc()).limit(4).all()
     # return render_template("index.html", all_posts=posts, current_user=current_user)
-    return render_template("home.html", all_posts=posts, current_user=current_user)
+    return render_template("home.html", all_posts=posts, fiction_stories=fiction_posts, current_user=current_user)
 
 
 @main.route("/purpose")
