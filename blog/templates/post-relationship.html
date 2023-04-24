@@ -40,6 +40,35 @@
           {% endif %}
 
 
+        <!-- READ NEXT -->
+        <article class="blog-post mt-5 mb-5">
+          <h3 class="about-heading mt-5 pt-5">Read Next</h3>
+          <br>
+        {% for post in next_posts %}
+        <div class="card mb-3 card-body" style="border-radius: 1rem;">
+          <div class="media">
+            <img class='align-self-start mr-3 rounded-3' src="{{post.img_url}}" alt="Generic placeholder image">
+              <div class="post-preview">
+                <a href="{{ url_for('posts.show_relationship_post', relationship_post_id=post.id) }}">
+                  <h2 class="about-title post-title">
+                    {{post.title}}
+                  </h2>
+                  <h3 class="about-subtitle post-subtitle">
+                    {{post.subtitle}}
+                  </h3>
+                </a>
+                <p class="post-meta">Posted by
+      
+                  <a href="#">{{post.author.name}}</a>
+                  on {{post.date.strftime("%B %d, %Y")}}
+                
+                </p>
+              </div>
+            </div>  
+          </div>  
+        {% endfor %}
+
+
 
     <!-- Comments Area -->
             
