@@ -340,3 +340,9 @@ form {
 
 }
     
+
+/* NEWSLETTER */
+
+.subscribe-button {
+    border-radius: 6px !important;
+}
