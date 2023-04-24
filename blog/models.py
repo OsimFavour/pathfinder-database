@@ -46,6 +46,12 @@ class User(UserMixin, db.Model):
         return f"User('{self.name}', '{self.email}', '{self.password}')"
 
 
+class EmailSubscriber():
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullablE=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+
+
 class PurposePost(db.Model):
     __tablename__  = "purpose_posts"
     id = db.Column(db.Integer, primary_key=True)
