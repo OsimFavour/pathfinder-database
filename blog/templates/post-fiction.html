@@ -33,11 +33,20 @@
           <hr>
 
 
+          <!-- If user id is 1 then they can see the Edit Post button -->
+          {% if current_user.id ==1: %}
+            <div class="clearfix mt-5 mb-5">
+                  <a class="btn btn-primary float-right" href="{{url_for('posts.edit_fiction_post', fiction_post_id=post.id)}}">Edit Post</a>
+            </div>
+            <hr>
+          {% endif %}
+
+
           <!-- READ NEXT -->
           <article class="blog-post mt-5 mb-5">
             <h3 class="about-heading mt-5 pt-5">Read Next</h3>
             <br>
-          {% for post in next_pots %}
+          {% for post in next_posts %}
           <div class="card mb-3 card-body" style="border-radius: 1rem;">
             <div class="media">
               <img class='align-self-start mr-3 rounded-3' src="{{post.img_url}}" alt="Generic placeholder image">
@@ -61,15 +70,7 @@
           </div>  
         {% endfor %}
 
-  <!-- If user id is 1 then they can see the Edit Post button -->
-          {% if current_user.id ==1: %}
-            <div class="clearfix mt-5 mb-5">
-                  <a class="btn btn-primary float-right" href="{{url_for('posts.edit_fiction_post', fiction_post_id=post.id)}}">Edit Post</a>
-            </div>
-            <hr>
-          {% endif %}
-
-
+        <hr class="mt-5">
 
     <!-- Comments Area -->
             
