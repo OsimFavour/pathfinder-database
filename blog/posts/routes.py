@@ -12,11 +12,17 @@ posts = Blueprint("posts", __name__)
 
 @posts.route("/purpose-post/<int:purpose_post_id>", methods=["GET", "POST"])
 @login_required
-# @google_login_required
 def show_purpose_post(purpose_post_id):
     form = CommentForm()
     requested_post = PurposePost.query.get(purpose_post_id)
-    next_posts = Newsletter.query.filter(Newsletter.id != requested_post.id).order_by(Newsletter.date.desc()).limit(3).all()
+    # Get the next three posts
+    all_posts =  PurposePost.query.order_by(PurposePost.date.desc()).all()
+    # Find the index of the requested post
+    index = all_posts.index(requested_post)
+    # Calculate the indices of the next three posts
+    next_indices = [(index + i + 1) % len(all_posts) for i in range(3)]
+    # Get the next three posts
+    next_posts = [all_posts[i] for i in next_indices]
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.", "info")
@@ -28,7 +34,7 @@ def show_purpose_post(purpose_post_id):
         )
         db.session.add(new_comment)
         db.session.commit()
-    return render_template("post-purpose.html", form=form, post=requested_post, title=requested_post.title, current_user=current_user, is_purpose=True)
+    return render_template("post-purpose.html", form=form, post=requested_post, next_posts=next_posts, title=requested_post.title, current_user=current_user, is_purpose=True)
 
 
 @posts.route("/relationship/<int:relationship_post_id>", methods=["GET", "POST"])
@@ -36,6 +42,10 @@ def show_purpose_post(purpose_post_id):
 def show_relationship_post(relationship_post_id):
     form = CommentForm()
     requested_post = RelationshipPost.query.get(relationship_post_id)
+    all_posts =  RelationshipPost.query.order_by(RelationshipPost.date.desc()).all()
+    index = all_posts.index(requested_post)
+    next_indices = [(index + i + 1) % len(all_posts) for i in range(3)]
+    next_posts = [all_posts[i] for i in next_indices]
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.", "info")
@@ -47,7 +57,7 @@ def show_relationship_post(relationship_post_id):
         )
         db.session.add(new_comment)
         db.session.commit()
-    return render_template("post-relationship.html", form=form, post=requested_post, title=requested_post.title, current_user=current_user, is_relationship=True)
+    return render_template("post-relationship.html", form=form, post=requested_post, next_posts=next_posts, title=requested_post.title, current_user=current_user, is_relationship=True)
 
 
 @posts.route("/fiction/<int:fiction_post_id>", methods=["GET", "POST"])
@@ -55,6 +65,11 @@ def show_relationship_post(relationship_post_id):
 def show_fiction_post(fiction_post_id):
     form = CommentForm()
     requested_post = Fiction.query.get(fiction_post_id)
+    all_posts =  Fiction.query.order_by(Fiction.date.desc()).all()
+    index = all_posts.index(requested_post)
+    next_indices = [(index + i + 1) % len(all_posts) for i in range(3)]
+    next_posts = [all_posts[i] for i in next_indices]
+
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.", "info")
@@ -66,17 +81,18 @@ def show_fiction_post(fiction_post_id):
         )
         db.session.add(new_comment)
         db.session.commit()
-    return render_template("post-fiction.html", form=form, post=requested_post, title=requested_post.title, current_user=current_user, is_fiction=True)
+    return render_template("post-fiction.html", form=form, post=requested_post, next_posts=next_posts, title=requested_post.title, current_user=current_user, is_fiction=True)
 
 
 @posts.route("/newsletter/<int:newsletter_id>", methods=["GET", "POST"])
 @login_required
 def show_newsletter(newsletter_id):
     form = CommentForm()
-    # requested post
     requested_post = Newsletter.query.get(newsletter_id)
-    # Get the next three posts
-    next_posts = Newsletter.query.filter(Newsletter.id != requested_post.id).order_by(Newsletter.date.desc()).limit(3).all()
+    all_posts =  Newsletter.query.order_by(Newsletter.date.desc()).all()
+    index = all_posts.index(requested_post)
+    next_indices = [(index + i + 1) % len(all_posts) for i in range(3)]
+    next_posts = [all_posts[i] for i in next_indices]
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.", "info")
