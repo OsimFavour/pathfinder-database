@@ -31,9 +31,19 @@
         <div class="col-lg-8 col-md-10 mx-auto">
             {{ post.body|safe }}
           <hr>
+          
+
+          <!-- If user id is 1 then they can see the Edit Post button -->
+          {% if current_user.id ==1: %}
+            <div class="clearfix mt-5">
+                  <a class="btn btn-primary float-right" href="{{url_for('posts.edit_newsletter', newsletter_id=post.id)}}">Edit Post</a>
+            </div>
+          {% endif %}
+
+          
 
           <!-- READ NEXT -->
-          <article class="blog-post mt-5 mb-5">
+          <article class="blog-post mb-5">
             <h3 class="about-heading mt-5 pt-5">Read Next</h3>
             <br>
             {% for post in next_posts %}
@@ -61,14 +71,7 @@
 
 
 
-          <hr class="mt-5">
-
-  <!-- If user id is 1 then they can see the Edit Post button -->
-          {% if current_user.id ==1: %}
-            <div class="clearfix mt-5">
-                  <a class="btn btn-primary float-right" href="{{url_for('posts.edit_newsletter', newsletter_id=post.id)}}">Edit Post</a>
-            </div>
-          {% endif %}
+          <hr class="mt-5 mb">
 
 
 
