@@ -6,14 +6,30 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
+
+          <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %} 
+          </div>
+
           <div class="site-heading">
             <!-- <h1 class="cursive-logo">Our Newsletters</h1> -->
             <h1 class="pb-4 mb-3 about-heading" style="font-size:50px;">Subscribe to our Newsletters</h1>
             <span class="subheading mb-4">Enter your email and sign up for free right now.</span>
             <section id="newsletter">
               <div class="container">
-                <form>
-                  <input class="form-control me-2" type="email" placeholder="Enter Your Email Address...">
+                <form action="" method="POST">
+                 
+                  <input class="form-control me-2" name="email" type="email" placeholder="Enter Your Email Address...">
+                  
+                
                   <button type="submit" class="subscribe-button mt-3 btn btn-secondary" style="border:0px!important;">Subscribe</button>
                 </form>
               </div>
