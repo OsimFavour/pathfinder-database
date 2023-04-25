@@ -1,9 +1,9 @@
 from io import BytesIO
-from flask import render_template, send_file, request, Blueprint
+from flask import render_template, send_file, flash, redirect, request, Blueprint
 from flask_login import current_user
 from blog import db
-from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Upload
-
+from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Upload, EmailSubscriber
+from blog.users.forms import EmailSubscriberForm
 
 main = Blueprint("main", __name__)
 
@@ -39,11 +39,29 @@ def fiction():
     return render_template("index-fiction.html", all_posts=posts, current_user=current_user)
 
 
-@main.route("/newsletter")
+@main.route("/newsletter", methods=["GET", "POST"])
 def newsletter():
+    form = EmailSubscriberForm()
+    if request.method == "POST":
+    # if form.validate_on_submit():
+        email = request.form.get("email")
+        print(email)
+        if current_user.is_authenticated:
+            name = current_user.name
+            print(name)
+        else:
+            name = None
+        subscriber = EmailSubscriber(
+            name=name, 
+            email=email
+            )
+        db.session.add(subscriber)
+        db.session.commit()
+        flash("You have subscribed successfully", "success")
+        return redirect("main.newsletter")
     page = request.args.get("page", 1, type=int)
     posts = Newsletter.query.order_by(Newsletter.date.desc()).paginate(page=page, per_page=5)
-    return render_template("index-newsletter.html", all_posts=posts)
+    return render_template("index-newsletter.html", all_posts=posts, form=form)
 
 
 @main.route("/my-books", methods=["GET", "POST"])
