@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
 
 
     # PARENTS RELATIONSHIP
+    # email_subscribers = relationship("EmailSubscriber", back_populates="author")
     purpose_posts = relationship("PurposePost", back_populates="author")
     relationship_posts = relationship("RelationshipPost", back_populates="author")
     fiction = relationship("Fiction", back_populates="author")
@@ -47,9 +48,18 @@ class User(UserMixin, db.Model):
 
 
 class EmailSubscriber():
+    __tablename__ = "email_subscribers"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullablE=True)
+    name = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
+
+    # CHILD USER
+    # author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    # author = relationship("User", back_populates="email_subscribers")
+
+    def __repr__(self):
+        return f'<Subscriber {self.email}>'
+
 
 
 class PurposePost(db.Model):
@@ -161,5 +171,6 @@ class Comment(db.Model):
     # TEXT COMMENT
     text = db.Column(db.Text, nullable=False)
 
+# db.drop_all()
 
 db.create_all() 
