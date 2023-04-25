@@ -4,7 +4,7 @@ import string
 from flask import render_template, redirect, url_for, flash, abort, session, request, Blueprint
 from flask_login import current_user, login_user, logout_user
 from blog import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI, JAVASCRIPT_ORIGINS, google_flow, db
-from blog.models import User
+from blog.models import User, EmailSubscriber
 from blog.users.utils import send_reset_email
 from blog.users.forms import RegisterForm, LoginForm, RequestResetForm, ResetPasswordForm
 from google.oauth2 import id_token
