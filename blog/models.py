@@ -47,7 +47,7 @@ class User(UserMixin, db.Model):
         return f"User('{self.name}', '{self.email}', '{self.password}')"
 
 
-class EmailSubscriber():
+class EmailSubscriber(db.Model):
     __tablename__ = "email_subscribers"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=True)
