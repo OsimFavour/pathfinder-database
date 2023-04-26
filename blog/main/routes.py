@@ -1,9 +1,11 @@
+import os
 from io import BytesIO
-from flask import render_template, send_file, flash, redirect, request, Blueprint
+from flask import render_template, send_file, flash, redirect, url_for, request, Blueprint
 from flask_login import current_user
 from blog import db
 from blog.models import PurposePost, RelationshipPost, Fiction, Newsletter, Upload, EmailSubscriber
-from blog.users.forms import EmailSubscriberForm
+from blog.users.forms import EmailSubscriberForm, ContactForm
+from blog.users.utils import send_email
 
 main = Blueprint("main", __name__)
 
@@ -44,6 +46,7 @@ def newsletter():
     form = EmailSubscriberForm()
     if request.method == "POST":
     # if form.validate_on_submit():
+        # email = form.email.data
         email = request.form.get("email")
         print(email)
         if current_user.is_authenticated:
@@ -58,7 +61,7 @@ def newsletter():
         db.session.add(subscriber)
         db.session.commit()
         flash("You have subscribed successfully", "success")
-        return redirect("main.newsletter")
+        return redirect(url_for('main.newsletter'))
     page = request.args.get("page", 1, type=int)
     posts = Newsletter.query.order_by(Newsletter.date.desc()).paginate(page=page, per_page=5)
     return render_template("index-newsletter.html", all_posts=posts, form=form)
@@ -100,7 +103,24 @@ def about():
     return render_template("about.html", all_posts=posts, current_user=current_user)
 
 
-@main.route("/contact")
+@main.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html", current_user=current_user)
+    form = ContactForm()
+    if request.method == "POST":
+        MAIL_USERNAME = os.environ.get("MY_EMAIL")
+        name = request.form.get("name")
+        email = request.form.get("email")
+        telephone = request.form.get("telephone")
+        message = request.form.get("message")
+        send_email(
+            admin_email=MAIL_USERNAME,
+            name=name,
+            email=email,
+            phone=telephone,
+            message=message
+        )
+        flash("We've received your mail, You'd get a response from us soon.", "success")
+        return redirect(url_for('main.contact'))
+    return render_template("contact.html", form=form)
+
 
