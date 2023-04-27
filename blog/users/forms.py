@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from blog.models import User 
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TelField
 from wtforms.validators import DataRequired, Length, Email, EqualTo ,ValidationError
 
 
@@ -48,3 +48,11 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField("Password", validators=[DataRequired()])
     confirm_password = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password")])
     submit = SubmitField("Reset Password")
+
+
+class ContactForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired(), Length(min=2, max=50)])
+    email = StringField("Email Address", validators=[DataRequired(), Email()])
+    phone_number = TelField("Phone Number", validators=[DataRequired()])
+    message = StringField("Message", validators=[DataRequired()])
+    send = SubmitField("Send")
