@@ -1,12 +1,13 @@
+import os
 import requests
 import secrets
 import string
 from flask import render_template, redirect, url_for, flash, abort, session, request, Blueprint
 from flask_login import current_user, login_user, logout_user
 from blog import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI, JAVASCRIPT_ORIGINS, google_flow, db
-from blog.models import User, EmailSubscriber
-from blog.users.utils import send_reset_email
-from blog.users.forms import RegisterForm, LoginForm, RequestResetForm, ResetPasswordForm
+from blog.models import User
+from blog.users.utils import send_reset_email, send_email
+from blog.users.forms import RegisterForm, LoginForm, RequestResetForm, ResetPasswordForm, ContactForm
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from google.auth.transport.requests import Request
@@ -19,28 +20,33 @@ users = Blueprint("users", __name__)
 
 @users.route('/register', methods=['GET', 'POST']) 
 def register():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        # flash(f"Account created for {form.name.data}!", "success")
-        if User.query.filter_by(email=form.email.data).first():
-            flash("You've already signed up with that email, log in instead!", "danger")
-            return redirect(url_for("users.login"))
-        hash_and_salted_password = generate_password_hash(
-            form.password.data,
-            method="pbkdf2:sha256",
-            salt_length=8
-        )
-        new_user = User(
-            name=form.name.data,
-            email=form.email.data,
-            password=hash_and_salted_password
-        )
-        print(new_user)
-        db.session.add(new_user)
-        db.session.commit()
-        login_user(new_user)
-        return redirect(url_for("main.home"))
-    return render_template("register.html", title="Register", form=form, current_user=current_user)
+    try:
+        form = RegisterForm()
+        if form.validate_on_submit():
+            # flash(f"Account created for {form.name.data}!", "success")
+            if User.query.filter_by(email=form.email.data).first():
+                flash("You've already signed up with that email, log in instead!", "danger")
+                return redirect(url_for("users.login"))
+            hash_and_salted_password = generate_password_hash(
+                form.password.data,
+                method="pbkdf2:sha256",
+                salt_length=8
+            )
+            new_user = User(
+                name=form.name.data,
+                email=form.email.data,
+                password=hash_and_salted_password
+            )
+            print(new_user)
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for("main.home"))
+        return render_template("register.html", title="Register", form=form, current_user=current_user)
+    except IntegrityError:
+        db.session.rollback()
+        flash("An account with these details already exists, please choose fresh user details.", "info")
+        return redirect(url_for("users.register"))
 
 
 @users.route('/login', methods=["GET", "POST"])
@@ -211,5 +217,3 @@ def reset_token(token):
         flash("Your password has been updated! You are now able to log in", "success")
         return redirect(url_for("users.login"))
     return render_template("reset-token.html", title="Reset Password", form=form)
-
-    
