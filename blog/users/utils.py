@@ -15,3 +15,13 @@ def send_reset_email(user):
 If you did not make this request then simply ignore this email and no changes will be made.
     """
     mail.send(msg)
+
+
+def send_email(admin_email, name, email, phone, message):
+    msg = Message(
+        "Contact Message", 
+        sender="noreply@demo.com", 
+        recipients=[admin_email]
+        )
+    msg.body = f"""Subject: User Contact Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage: {message}"""
+    mail.send(msg)
