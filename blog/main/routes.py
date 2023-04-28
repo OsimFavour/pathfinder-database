@@ -97,10 +97,10 @@ def download(upload_id):
 #         return render_template("search.html", form=form, searched=searched_post, posts=ordered_posts)
 
 
-@main.route("/about")
-def about():
-    posts = PurposePost.query.order_by(PurposePost.date.desc())
-    return render_template("about.html", all_posts=posts, current_user=current_user)
+# @main.route("/about")
+# def about():
+#     posts = PurposePost.query.order_by(PurposePost.date.desc())
+#     return render_template("about-new.html", all_posts=posts, current_user=current_user)
 
 
 @main.route("/contact", methods=["GET", "POST"])
