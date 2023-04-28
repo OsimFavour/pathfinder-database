@@ -70,11 +70,23 @@
               <a class="nav-link" href="{{ url_for('users.logout') }}">Log Out</a>
             </li>
           {% endif %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('main.about') }}">About</a>
-          </li>
+          
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('main.contact') }}">Contact</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Articles</a>
+            
+            <ul class="dropdown-menu p-3 m-2" id="navbarDropdownMenuLink" style="width: 25%; border-radius: 0;">
+              <li><a class="dropdown-item post-title" href="{{url_for('main.purpose')}}">Purpose</a></li>
+              <hr>
+              <li><a class="dropdown-item" href="{{url_for('main.relationship')}}">Relationships</a></li>
+              <hr>
+              <li><a class="dropdown-item" href="{{url_for('main.fiction')}}">Fiction</a></li>
+              <hr>
+              <li><a class="dropdown-item" href="{{url_for('main.newsletter')}}">Newsletters</a></li>
+            </ul>
           </li>
           
           <!-- Show Search bar for only users that have registered to the website -->
