@@ -253,7 +253,6 @@ form {
     width: 107%;
     margin-left: -8px !important;
     min-width: 70px;
-    /* height: 50px; */
 }
 
 .google:active, .google:focus, .google:hover {
@@ -304,6 +303,49 @@ form {
     font-weight: 500; 
     font-size: 17.89px; 
     margin-top: -15px !important;
+}
+
+
+.google-signup-btn {
+    background-color: #fff;
+    border: 1px solid #007BFF;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 24px;
+  }
+
+  .google-signup-btn:active,  .google-signup-btn:hover, .google-signup-btn:focus {
+    border: 1px solid #0085a1;
+    background-color: #fff;
+    border-color: #0d6efd !important;
+    border: 2px solid #007BFF;
+    color: #000; /* keep text color black */
+    opacity: 0.9; 
+
+  }
+
+  
+.google-signup-img {
+  margin-right: 220px;
+  margin-top: -5px;
+  height: 30px;
+  width: 30px;
+}
+
+.sign-up {
+    color: #000;
+    opacity: 0.9; 
+    margin-top: -29px;
+    margin-left: 15px;
+    padding-left: 15px;
+    font-weight: 500; 
+    font-size: 20px; 
+  }
+
+.sign-up:hover, .sign-up:active, .sign-up:focus {
+    color: #000 !important; 
+    
 }
 
 @media (max-width: 1000px) {
