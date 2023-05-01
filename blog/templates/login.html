@@ -80,7 +80,7 @@
                   </div>
                 </form>
                   
-                  <form action="{{ url_for('users.google_login') }}" method="POST">
+                  <!-- <form action="{{ url_for('users.google_login') }}" method="POST">
                     <div class="w-100 mt-n3">
                       <a href="">
                         <button type="submit" class="google w-100">
@@ -88,8 +88,17 @@
                         </button>
                       </a>
                     </div>
-                  </form>
+                  </form> -->
                   
+                  <form action="{{ url_for('users.google_login') }}" method="POST">
+                    <div class="google-signup-btn w-100 mt-n3">
+                        <button type="submit" class="google w-100">
+                          <img class="google-signup-img" src="{{ url_for('static', filename='img/google_img.png')}}" alt="google button">
+                          <div class="sign-up">Sign in with Google</div>
+                        </button>
+                    </div>
+                  </form>
+
                   <hr>
                   <div>
                       <small class="text-muted">
