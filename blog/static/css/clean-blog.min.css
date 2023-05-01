@@ -120,7 +120,6 @@
   
 .form-control:focus {
     background-color: #eeeeee69;
-    /* box-shadow: none; */
     border-color: #eee;
   }
 
