@@ -262,16 +262,12 @@ def edit_newsletter(newsletter_id):
     post = Newsletter.query.get(newsletter_id)
     edit_form = CreatePostForm(
         title=post.title,
-        subtitle=post.subtitle,
-        img_url=post.img_url,
         author=current_user,
         body=post.body
     )
     soup = BeautifulSoup(edit_form.body.data, "html.parser")
     if edit_form.validate_on_submit():
         post.title = edit_form.title.data
-        post.subtitle = edit_form.subtitle.data
-        post.img_url = edit_form.img_url.data
         post.body = soup.text
         db.session.commit()
         return redirect(url_for("posts.show_newsletter", newsletter_id=post.id))
