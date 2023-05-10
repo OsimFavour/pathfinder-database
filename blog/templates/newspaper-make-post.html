@@ -1,0 +1,53 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/edit-bg.jpg')}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            {% if edit_for_purpose: %}
+              <h1>Edit Purpose Post</h1>
+            {% elif edit_for_relationship: %}
+              <h1>Edit Relationship Post</h1>
+            {% elif edit_for_fiction: %}
+              <h1>Edit Fiction Post</h1>
+            {% elif edit_for_newsletter: %}
+              <h1>Edit Newsletter</h1>
+            {% elif add_for_purpose: %}
+              <h1>Post-Purpose</h1>
+            {% elif add_for_relationship: %}
+              <h1>Post-Relationship</h1>
+            {% elif add_for_fiction: %}
+              <h1>Post-Fiction</h1>
+            {% elif add_for_newsletter: %}
+              <h1>Post-Newsletters</h1>
+            {% endif %}
+            <span class="subheading">Make Post Here!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto mb-5 mt-5">
+          <form method="POST" action="">
+            {{ ckeditor.load() }}
+            {{ ckeditor.config(name='body') }}
+            {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+        </form>
+        </div>
+      </div>
+    </div>
+  
+  
+
+{% include "footer.html" %}
+{% endblock %}
