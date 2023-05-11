@@ -14,4 +14,4 @@ more functionalities, more features and new databases.
 # Technologies
 - Flask
 - Flask-Login
-- 
+- Flask-SQLAlchemy
