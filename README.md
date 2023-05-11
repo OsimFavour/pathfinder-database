@@ -18,3 +18,4 @@ more functionalities, more features and new databases.
 - Google OAuth2
 - Flask-SQLAlchemy
 - Werkzeug Security
+- HTML/CSS
