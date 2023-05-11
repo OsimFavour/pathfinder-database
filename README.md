@@ -39,3 +39,7 @@ more functionalities, more features and new databases.
 3. Commit your changes: `git commit -m 'Add some new feature'`
 4. Push to the branch: `git push origin my-pathfinder-feature`
 5. Submit a pull request :D
+
+# License
+- This project is licensed under the [MIT License](LICENSE).
+
