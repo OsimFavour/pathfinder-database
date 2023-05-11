@@ -23,4 +23,7 @@ more functionalities, more features and new databases.
 - Bootstrap
 
 # Installation
-- Clone the repository: "git clone "
+- Clone the repository: "git clone https://github.com/OsimFavour/pathfinder.com"
+- Install dependencies: "pip install -r requirements.txt"
+- Set up the database: "flask db upgrade"
+- Start the server: "flask run"
