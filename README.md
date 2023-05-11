@@ -43,3 +43,8 @@ more functionalities, more features and new databases.
 # License
 - This project is licensed under the [MIT License](LICENSE).
 
+# Inspiration
+-  I believe that stories have the power to help us find our purpose and deepen our relationships with others and give us good action steps to make great choices. Through sharing our own stories and connecting with the stories of others, we can find meaning and purpose in our lives, build stronger relationships, and create a more compassionate and understanding world.
+
+That's why this blog was created - to provide a space where readers can explore the power of storytelling and find inspiration for their own lives both through fiction and non-fiction. Whether you're looking for purpose based personal development tips, relationship advice, or just a good fiction story to get lost in, I hope you'll find something here that speaks to you.
+
