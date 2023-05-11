@@ -7,6 +7,7 @@ more functionalities, more features and new databases.
 # Features
 - User authentication: Users can create an account, log in using Flask-Login or Google authentication using Google OAuth2.
 - View Stories: Registered users can gain access to limitless content ranging from blog posts on purpose, to knowing more about how quality relationships work to reading inspiring stories that can foster transformation.
+- Search Features: 
 - Download books: If reading is not enough and you want a piece of the content with you always, we have a download section where books can be downloaded for free.
 - Commenting: Users can comment on which stories inspired them the most.
 - Newsletter: Users can subscribe to our newsletter with their email addresses to receive updates on our latest blog posts.
