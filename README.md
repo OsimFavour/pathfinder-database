@@ -30,5 +30,5 @@ more functionalities, more features and new databases.
 
 # Usage
 - Navigate to the login page and create an account or login using Flask-Login or Google-authentication.
-- Once logged in, users gain access to inspiring blog posts on various topics or search for desired relevant topics specific to their needs at the moment.
-- Users can also comment on each other's stories and subscribe to our newsletter to receive updates on our latest blog posts, and can also make downloads if they want.
+- Once logged in, users gain access to inspiring blog posts on various topics or can search for desired relevant topics specific to their needs at the moment.
+- Users can also comment on each other's stories and subscribe to our newsletter to receive updates on our latest blog posts, and can also make downloads if they desire to.
