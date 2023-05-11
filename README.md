@@ -16,3 +16,4 @@ more functionalities, more features and new databases.
 - Flask-Login
 - Google OAuth2
 - Flask-SQLAlchemy
+- Werkzeug Security
