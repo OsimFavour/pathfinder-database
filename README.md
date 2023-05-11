@@ -26,4 +26,4 @@ more functionalities, more features and new databases.
 - Clone the repository: "git clone https://github.com/OsimFavour/pathfinder.com"
 - Install dependencies: "pip install -r requirements.txt"
 - Set up the database: "flask db upgrade"
-- Start the server: "flask run"
+- Start the server: "export FLASK_APP=main.py", "flask run"
