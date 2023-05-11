@@ -22,5 +22,5 @@ more functionalities, more features and new databases.
 - HTML/CSS
 - Bootstrap
 
-# Technologies
-- Clone
+# Installation
+- Clone the repository: "git clone "
