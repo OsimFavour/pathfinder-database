@@ -12,3 +12,6 @@ more functionalities, more features and new databases.
 - Newsletter: Users can subscribe to our newsletter with their email addresses to receive updates on our latest blog posts.
 
 # Technologies
+- Flask
+- Flask-Login
+- 
