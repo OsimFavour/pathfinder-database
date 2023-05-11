@@ -10,20 +10,8 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="page-heading">
-            {% if edit_for_purpose: %}
-              <h1>Edit Purpose Post</h1>
-            {% elif edit_for_relationship: %}
-              <h1>Edit Relationship Post</h1>
-            {% elif edit_for_fiction: %}
-              <h1>Edit Fiction Post</h1>
-            {% elif edit_for_newsletter: %}
+            {% if edit_for_newsletter: %}
               <h1>Edit Newsletter</h1>
-            {% elif add_for_purpose: %}
-              <h1>Post-Purpose</h1>
-            {% elif add_for_relationship: %}
-              <h1>Post-Relationship</h1>
-            {% elif add_for_fiction: %}
-              <h1>Post-Fiction</h1>
             {% elif add_for_newsletter: %}
               <h1>Post-Newsletters</h1>
             {% endif %}
