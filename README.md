@@ -23,3 +23,4 @@ more functionalities, more features and new databases.
 - Bootstrap
 
 # Technologies
+- Clone
