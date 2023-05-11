@@ -10,3 +10,5 @@ more functionalities, more features and new databases.
 - Download books: If reading is not enough and you want a piece of the content with you always, we have a download section where books can be downloaded for free.
 - Commenting: Users can comment on which stories inspired them the most.
 - Newsletter: Users can subscribe to our newsletter with their email addresses to receive updates on our latest blog posts.
+
+# Technologies
