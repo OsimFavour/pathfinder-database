@@ -19,3 +19,4 @@ more functionalities, more features and new databases.
 - Flask-SQLAlchemy
 - Werkzeug Security
 - HTML/CSS
+- Bootstrap
