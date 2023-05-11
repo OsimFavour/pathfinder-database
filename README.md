@@ -21,3 +21,5 @@ more functionalities, more features and new databases.
 - Werkzeug Security
 - HTML/CSS
 - Bootstrap
+
+# Technologies
