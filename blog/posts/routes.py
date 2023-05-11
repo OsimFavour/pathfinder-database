@@ -89,11 +89,11 @@ def show_fiction_post(fiction_post_id):
 def show_newsletter(newsletter_id):
     form = CommentForm()
     requested_post = Newsletter.query.get(newsletter_id)
-    next_posts = Newsletter.query.order_by(Newsletter.date.desc()).limit(4).all()
-    # all_posts =  Newsletter.query.order_by(Newsletter.date.desc()).all()
-    # index = all_posts.index(requested_post)
-    # next_indices = [(index + i + 1) % len(all_posts) for i in range(3)]
-    # next_posts = [all_posts[i] for i in next_indices]
+    # next_posts = Newsletter.query.order_by(Newsletter.date.desc()).limit(4).all()
+    all_posts =  Newsletter.query.order_by(Newsletter.date.desc()).all()
+    index = all_posts.index(requested_post)
+    next_indices = [(index + i + 1) % len(all_posts) for i in range(3)]
+    next_posts = [all_posts[i] for i in next_indices]
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.", "info")
