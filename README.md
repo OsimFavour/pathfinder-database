@@ -9,4 +9,4 @@ more functionalities, more features and new databases.
 - View Stories: Registered users can gain access to limitless content ranging from blog posts on purpose, to knowing more about how quality relationships work to reading inspiring stories that can foster transformation
 - Download books: If reading is not enough and you want a piece of the content with you always, we have a download section where books can be downloaded for free.
 - Commenting: Users can comment on which stories inspired them the most
-- Newsletter: Users can
+- Newsletter: Users can subscribe
