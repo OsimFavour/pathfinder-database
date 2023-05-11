@@ -260,7 +260,7 @@ def edit_fiction_post(fiction_post_id):
 @admin_only
 def edit_newsletter(newsletter_id):
     post = Newsletter.query.get(newsletter_id)
-    edit_form = CreatePostForm(
+    edit_form = NewsletterPostForm(
         title=post.title,
         author=current_user,
         body=post.body
