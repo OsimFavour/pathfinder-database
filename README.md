@@ -32,3 +32,6 @@ more functionalities, more features and new databases.
 - Navigate to the login page and create an account or login using Flask-Login or Google-authentication.
 - Once logged in, users gain access to inspiring blog posts on various topics or can search for desired relevant topics specific to their needs at the moment.
 - Users can also comment on each other's stories and subscribe to our newsletter to receive updates on our latest blog posts, and can also make downloads if they desire to.
+
+# Contributing
+- If you would like to contribute to the project, please fork the repository and submit a pull request.
