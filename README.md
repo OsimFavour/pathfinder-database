@@ -4,7 +4,7 @@ fictions. It's a modified version of pathfinder.org located in my repository, in
 more functionalities, more features and new databases.
 
 # pathfinder.com at a fast glance
-![Uploading ezgif.com-video-to-gif (1).gif…]()
+![ezgif com-video-to-gif](https://github.com/OsimFavour/pathfinder.com/assets/95959056/7446c92d-31d5-469c-9d68-51fc6913237c)
 
 
 # Features
