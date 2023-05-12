@@ -4,7 +4,6 @@ fictions. It's a modified version of pathfinder.org located in my repository, in
 more functionalities, more features and new databases.
 
 # pathfinder.com at a fast glance
-![pathfinder_video_from_adobe2_x_AdobeExpress](https://github.com/OsimFavour/pathfinder.com/assets/95959056/135c525e-3bbf-4150-b42e-86bcae42b9ac)
 
  
 # Features
