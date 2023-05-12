@@ -5,7 +5,7 @@ more functionalities, more features and new databases.
 
 # pathfinder.com at a fast glance
 
- 
+
 # Features
 - User authentication: Users can create an account, log in using Flask-Login or Google authentication using Google OAuth2.
 - View Stories: Registered users can gain access to limitless content ranging from blog posts on purpose, to knowing more about how quality relationships work to reading inspiring stories that can foster transformation.
