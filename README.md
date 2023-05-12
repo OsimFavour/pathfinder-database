@@ -4,6 +4,8 @@ fictions. It's a modified version of pathfinder.org located in my repository, in
 more functionalities, more features and new databases.
 
 # pathfinder.com at a glance
+![pathfinder_video_gif_for_guthub](https://github.com/OsimFavour/pathfinder.com/assets/95959056/7eaa56b2-6cee-4292-85b2-27c58a384aa7)
+
 
 # Features
 - User authentication: Users can create an account, log in using Flask-Login or Google authentication using Google OAuth2.
