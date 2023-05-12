@@ -4,9 +4,7 @@ fictions. It's a modified version of pathfinder.org located in my repository, in
 more functionalities, more features and new databases.
 
 # pathfinder.com at a glance
-![pathfinder_video_for_github](https://github.com/OsimFavour/pathfinder.com/assets/95959056/d304a1d5-4372-49a5-a6e9-dfe95a33d1ca)
-
-
+ 
 # Features
 - User authentication: Users can create an account, log in using Flask-Login or Google authentication using Google OAuth2.
 - View Stories: Registered users can gain access to limitless content ranging from blog posts on purpose, to knowing more about how quality relationships work to reading inspiring stories that can foster transformation.
