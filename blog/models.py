@@ -46,6 +46,7 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f"User('{self.name}', '{self.email}', '{self.password}')"
 
+db.drop_all()
 
 class EmailSubscriber(db.Model):
     __tablename__ = "email_subscribers"
